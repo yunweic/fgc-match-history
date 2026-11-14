@@ -1,0 +1,22 @@
+# Local development database. Start with: docker compose up -d
+# These credentials are for local development only.
+services:
+  db:
+    image: postgres:17
+    container_name: fgc-match-history-db
+    environment:
+      POSTGRES_USER: fgc
+      POSTGRES_PASSWORD: fgc_dev
+      POSTGRES_DB: match_history
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fgc -d match_history"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+volumes:
+  db-data:
